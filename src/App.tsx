@@ -297,12 +297,16 @@ export default function App() {
     : FEATURES.filter(f => f.category === activeTab);
 
   return (
-    <div className={`flex items-center justify-center w-full h-screen transition-colors duration-500 ${theme.bg} ${theme.text} p-4 md:p-8 font-sans`}>
-      {/* Centered Desktop App Container (16:9) */}
-      <div className={`relative w-full max-w-[1280px] h-full max-h-[720px] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)] rounded-[40px] overflow-hidden flex ${theme.container} border border-white/5`}>
+    <div className={`flex items-center justify-center w-full h-screen transition-colors duration-500 ${theme.bg} ${theme.text} p-4 md:p-8 font-sans overflow-hidden relative`}>
+      {/* Dynamic Background Blobs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-600/20 blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+      
+      {/* Centered Desktop App Container (16:9) with Glassmorphism */}
+      <div className={`relative w-full max-w-[1280px] h-full max-h-[720px] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.9)] rounded-[40px] overflow-hidden flex ${theme.container.replace('bg-', 'bg-opacity-70 bg-')} backdrop-blur-3xl border border-white/10 z-10`}>
         
-        {/* Left Sidebar (Desktop Style) */}
-        <aside className={`w-80 h-full flex flex-col border-r border-white/5 bg-black/10 backdrop-blur-3xl`}>
+        {/* Left Sidebar (Glass Style) */}
+        <aside className={`w-80 h-full flex flex-col border-r border-white/5 bg-white/5 backdrop-blur-md`}>
           <div className="p-10 pb-4">
             <div className="flex items-center gap-3 mb-10">
               <div className={`p-2 rounded-2xl ${theme.accent} shadow-lg shadow-blue-500/20`}>
