@@ -89,6 +89,10 @@ class FluxionTweaker:
         self.current_theme = "Dark"
         self.colors = self.themes[self.current_theme]
         
+        # License Check (Anti-Piracy Mockup)
+        if not self.verify_license():
+            self.show_anti_piracy_prompt()
+        
         self.setup_ui()
         self.start_monitoring()
 
@@ -194,9 +198,58 @@ class FluxionTweaker:
         Label(modal, text=info_text, font=("Inter", 11), bg=self.colors["bg"], fg=self.colors["text"], justify=CENTER).pack(pady=10)
         
         Button(modal, text="Close", bg=self.colors["card"], fg=self.colors["text"], width=15, command=modal.destroy).pack(side=BOTTOM, pady=20)
-        # Add other pages as needed...
+
+    def verify_license(self):
+        # Conceptual license check: Check for license.txt in root or registry key
+        try:
+            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\FluxionTweaker", 0, winreg.KEY_READ)
+            val, _ = winreg.QueryValueEx(key, "License")
+            winreg.CloseKey(key)
+            return val == "FLX-PRO-2026"
+        except:
+            return os.path.exists("license.txt")
+
+    def show_anti_piracy_prompt(self):
+        prompt = Toplevel(self.root)
+        prompt.title("License Warning")
+        prompt.geometry("400x250")
+        prompt.configure(bg=self.colors["bg"])
+        prompt.attributes("-topmost", True)
+        
+        Label(prompt, text="Unauthorized Copy", font=("Inter", 16, "bold"), bg=self.colors["bg"], fg="#FF3B30").pack(pady=20)
+        Label(prompt, text="Please purchase a license to unlock\nall Pro features and optimizations.", font=("Inter", 10), bg=self.colors["bg"], fg=self.colors["text"]).pack(pady=10)
+        
+        Button(prompt, text="Ignore (Trial Mode)", command=prompt.destroy, bg=self.colors["card"], fg=self.colors["text"], width=20).pack(pady=10)
+
+    def block_yandex_browser(self):
+        if not self.verify_license():
+            messagebox.showwarning("Pro Feature", "Blocking browsers requires a Pro license!")
+            return
+            
+        try:
+            # Block browser.exe via DisallowRun
+            path = r"Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\DisallowRun"
+            key = winreg.CreateKey(winreg.HKEY_CURRENT_USER, path)
+            winreg.SetValueEx(key, "1", 0, winreg.REG_SZ, "browser.exe")
+            winreg.CloseKey(key)
+            
+            policy_path = r"Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+            policy_key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, policy_path, 0, winreg.KEY_SET_VALUE)
+            winreg.SetValueEx(policy_key, "DisallowRun", 0, winreg.REG_DWORD, 1)
+            winreg.CloseKey(policy_key)
+            
+            messagebox.showinfo("Success", "Yandex Browser (browser.exe) has been blocked successfully.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to modify registry: {e}")
 
     def page_main(self):
+        welcome_frame = Frame(self.content_frame, bg=self.colors["card"], padx=25, pady=25)
+        welcome_frame.pack(fill=X, pady=(0, 20))
+        Label(welcome_frame, text="System Dashboard", font=("Inter", 18, "bold"), bg=self.colors["card"], fg=self.colors["accent"]).pack(anchor="w")
+        Label(welcome_frame, text="Status: Optimal", font=("Inter", 10), bg=self.colors["card"], fg="#4CD964").pack(anchor="w")
+        
+        Button(self.content_frame, text="Block Yandex Browser (browser.exe)", bg="#FF3B30", fg="#FFFFFF", font=("Inter", 10, "bold"), pady=10, border=0, command=self.block_yandex_browser).pack(fill=X, pady=5)
+        
         self.create_toggle("Game Mode", "Enable Windows Game Mode for better performance", "GAMEMODE")
         self.create_toggle("Disable Visual Effects", "Disable transparency and animations", "VISUALEFFECTS")
         self.create_toggle("Disable Telemetry", "Stop Windows data collection", "TELEMETRY")

@@ -233,6 +233,8 @@ const FEATURES: FeatureToggle[] = [
   { id: 'game-mode', title: 'Игровой режим', description: 'Макс. FPS, отключение фона', category: 'main', tag: 'Gaming', icon: Gamepad2 },
   { id: 'visual-effects', title: 'Отключить визуальные эффекты', description: 'Анимации, прозрачность, тени', category: 'main', icon: Layout },
   { id: 'telemetry', title: 'Отключить телеметрию', description: 'DiagTrack, dmwappushservice', category: 'main', icon: ShieldCheck },
+  { id: 'block-yandex', title: 'Блокировка Yandex Browser', description: 'Блокирует запуск browser.exe через реестр', category: 'privacy', tag: 'Block', icon: ShieldCheck },
+  { id: 'anti-piracy', title: 'Антипиратская защита', description: 'Проверка лицензии и целостности системы', category: 'privacy', icon: ShieldCheck },
   { id: 'msi-mode', title: 'MSI Mode (GPU)', description: 'Lower GPU latency by enabling MSI interrupts.', category: 'optimization', icon: Rocket },
   { id: 'hpet', title: 'Disable HPET', description: 'Reduce timer overhead for better input lag.', category: 'optimization', icon: RefreshCcw },
   { id: 'vbs', title: 'Disable VBS/HVCI', description: 'Regain CPU performance by disabling virtualization security.', category: 'optimization', icon: Cpu },
@@ -349,8 +351,17 @@ export default function App() {
              ))}
           </nav>
 
-          <div className="p-8 border-t border-white/5">
-             <div className="flex items-center gap-3 opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+          <div className="p-8 border-t border-white/5 space-y-4">
+             <button 
+               onClick={() => window.open('https://github.com', '_blank')}
+               className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group"
+             >
+                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-blue-500/20 transition-colors">
+                   <Download className="w-4 h-4 text-blue-400" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest">Download ZIP</span>
+             </button>
+             <div className="flex items-center gap-3 opacity-40 hover:opacity-100 transition-opacity cursor-pointer px-4">
                 <div className="p-2 rounded-lg bg-white/5">
                    <Info className="w-4 h-4" />
                 </div>
