@@ -24,6 +24,14 @@ To create the standalone EXE file, use the provided builder script:
 2. Run `python build_project.py`.
 3. The generated file will be in the `dist/` folder.
 
+## Creating an Installer (Setup.exe)
+We use **Inno Setup** to create professional installers:
+1. Install [Inno Setup](https://jrsoftware.org/).
+2. Build the project using `build_project.py` first to get the `.exe`.
+3. Open `installer_setup.iss` in Inno Setup.
+4. Click **Compile**.
+5. Your setup file will be in the `installer_output/` folder.
+
 ## Build Instructions (Web/Vite)
 1. **Install Node.js 18+**
 2. **Install dependencies:** `npm install`

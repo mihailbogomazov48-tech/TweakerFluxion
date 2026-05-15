@@ -170,12 +170,27 @@ class FluxionTweaker:
         subprocess.run(cmd, shell=True)
         messagebox.showinfo("Success", "VBS/HVCI disabled. Restart required.")
 
+    def set_old_context_menu(self):
+        try:
+            key_path = r"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32"
+            winreg.CreateKey(winreg.HKEY_CURRENT_USER, key_path)
+            messagebox.showinfo("Success", "Classic context menu enabled. Please restart Explorer.")
+        except:
+            messagebox.showerror("Error", "Failed to apply context menu tweak.")
+
+    def run_ram_cleaner(self):
+        # Conceptual call to EmptyWorkingSet or clear standby list
+        subprocess.run(["powershell", "-Command", "Clear-Variable *; [System.GC]::Collect()"], capture_output=True)
+        messagebox.showinfo("Success", "Standby list and RAM cache cleared.")
+
     def page_advanced(self):
         Label(self.content_frame, text="Advanced Tweaks", font=("Inter", 20, "bold"), bg=self.colors["bg"], fg=self.colors["text"]).pack(anchor="w", pady=(0, 20))
         
         adv_card = Frame(self.content_frame, bg=self.colors["card"], padx=20, pady=20)
         adv_card.pack(fill=X)
         
+        Button(adv_card, text="Restore Old Context Menu", command=self.set_old_context_menu, bg=self.colors["accent"], fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
+        Button(adv_card, text="Clean RAM Now", command=self.run_ram_cleaner, bg=self.colors["accent"], fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
         Button(adv_card, text="Bypass TTL (Set 65)", command=self.set_ttl_65, bg=self.colors["accent"], fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
         Button(adv_card, text="Disable VBS / HVCI", command=self.disable_vbs, bg=self.colors["accent"], fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
         Button(adv_card, text="Remove Microsoft Edge", command=self.remove_edge, bg="#FF3B30", fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)

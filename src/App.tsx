@@ -232,6 +232,11 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 const FEATURES: FeatureToggle[] = [
+  { id: 'old-context-menu', title: 'Вернуть старое контекстное меню', description: 'Классическое меню правой кнопки мыши (Windows 11)', category: 'advanced', tag: 'UI', icon: Layout },
+  { id: 'disable-uac', title: 'Отключить UAC', description: 'Отключает уведомления контроля учётных записей', category: 'privacy', icon: ShieldCheck },
+  { id: 'ram-cleaner', title: 'Очистка кэша RAM', description: 'Освобождение памяти от ненужных задач в фоне', category: 'optimization', tag: 'Boost', icon: RefreshCcw },
+  { id: 'ssd-trim', title: 'Оптимизация SSD', description: 'Принудительное включение TRIM для долговечности', category: 'optimization', icon: HardDrive },
+  { id: 'disable-bing', title: 'Отключить поиск Bing', description: 'Убирает веб-результаты из меню Пуск', category: 'advanced', icon: Search },
   { id: 'game-mode', title: 'Игровой режим', description: 'Макс. FPS, отключение фона', category: 'main', tag: 'Gaming', icon: Gamepad2 },
   { id: 'visual-effects', title: 'Отключить визуальные эффекты', description: 'Анимации, прозрачность, тени', category: 'main', icon: Layout },
   { id: 'telemetry', title: 'Отключить телеметрию', description: 'DiagTrack, dmwappushservice', category: 'main', icon: ShieldCheck },
