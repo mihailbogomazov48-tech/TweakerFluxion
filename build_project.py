@@ -33,6 +33,15 @@ def build():
     try:
         subprocess.check_call(cmd)
         print("\nSUCCESS! Executable is in the 'dist' folder.")
+        
+        # 4. Optional Zipping
+        print("\nDo you want to create a ZIP archive of the project files? (y/n)")
+        # In this automated environment we skip input, but the user can run create_zip.py separately.
+        # However, for convenience, we can just run it if it exists.
+        if os.path.exists("create_zip.py"):
+            print("Running create_zip.py...")
+            subprocess.run([sys.executable, "create_zip.py"])
+            
     except Exception as e:
         print(f"\nBUILD FAILED: {e}")
 

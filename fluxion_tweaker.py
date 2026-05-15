@@ -183,12 +183,29 @@ class FluxionTweaker:
         subprocess.run(["powershell", "-Command", "Clear-Variable *; [System.GC]::Collect()"], capture_output=True)
         messagebox.showinfo("Success", "Standby list and RAM cache cleared.")
 
+    def zip_project(self):
+        try:
+            subprocess.run([sys.executable, "create_zip.py"], capture_output=True)
+            messagebox.showinfo("Success", "Project files have been zipped into FluxionTweaker_Project.zip")
+        except:
+            messagebox.showerror("Error", "Failed to run create_zip.py")
+
+    def toggle_glass_mode(self):
+        if self.root.attributes("-alpha") == 1.0:
+            self.root.attributes("-alpha", 0.85)
+            messagebox.showinfo("Glass Mode", "Glass Mode Enabled (85% Transparency)")
+        else:
+            self.root.attributes("-alpha", 1.0)
+            messagebox.showinfo("Glass Mode", "Glass Mode Disabled")
+
     def page_advanced(self):
         Label(self.content_frame, text="Advanced Tweaks", font=("Inter", 20, "bold"), bg=self.colors["bg"], fg=self.colors["text"]).pack(anchor="w", pady=(0, 20))
         
         adv_card = Frame(self.content_frame, bg=self.colors["card"], padx=20, pady=20)
         adv_card.pack(fill=X)
         
+        Button(adv_card, text="Toggle Glass Mode (Transparency)", command=self.toggle_glass_mode, bg=self.colors["accent"], fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
+        Button(adv_card, text="Zip Project Files", command=self.zip_project, bg=self.colors["accent"], fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
         Button(adv_card, text="Restore Old Context Menu", command=self.set_old_context_menu, bg=self.colors["accent"], fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
         Button(adv_card, text="Clean RAM Now", command=self.run_ram_cleaner, bg=self.colors["accent"], fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
         Button(adv_card, text="Bypass TTL (Set 65)", command=self.set_ttl_65, bg=self.colors["accent"], fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
@@ -359,7 +376,7 @@ class FluxionTweaker:
         frame.pack(fill=X, pady=5)
         
         Label(frame, text=title, font=("Inter", 12, "bold"), bg=self.colors["card"], fg=self.colors["text"]).pack(anchor="w")
-        Label(frame, text=desc, font=("Inter", 10), bg=self.colors["card"], fg=self.colors["text"], opacity=0.7).pack(anchor="w")
+        Label(frame, text=desc, font=("Inter", 10), bg=self.colors["card"], fg=self.colors["text"]).pack(anchor="w")
         
         # Simple Toggle Placeholder
         var = BooleanVar()
