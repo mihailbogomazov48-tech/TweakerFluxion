@@ -28,9 +28,10 @@ if not is_admin():
 class FluxionTweaker:
     def __init__(self, root):
         self.root = root
-        self.root.title("FluxionTweaker v3.0")
+        self.root.title("FluxionTweaker v5.6 Pro")
         self.root.geometry("1280x720")
         self.root.resizable(False, False)
+        self.always_on_top = False
         
         # Languages
         self.translations = {
@@ -114,7 +115,7 @@ class FluxionTweaker:
         # Navigation
         self.nav_items = [
             "Main", "Optimization", "Gaming", "Privacy", "Cleaning", 
-            "Debloat", "Customization", "Monitoring", "Activation", 
+            "Debloat", "Customization", "Monitoring", "Advanced", 
             "Programs", "Frameworks", "Drivers", "Settings", "About"
         ]
         self.nav_buttons = []
@@ -142,15 +143,50 @@ class FluxionTweaker:
         elif page_name == "Optimization": self.page_optimization()
         elif page_name == "Gaming": self.page_gaming()
         elif page_name == "Monitoring": self.page_monitoring()
+        elif page_name == "Advanced": self.page_advanced()
         elif page_name == "Settings": self.page_settings()
         elif page_name == "About": self.page_about()
+
+    def toggle_always_on_top(self):
+        self.always_on_top = not self.always_on_top
+        self.root.attributes("-topmost", self.always_on_top)
+
+    def remove_edge(self):
+        cmd = 'Get-AppxPackage -AllUsers *MicrosoftEdge* | Remove-AppxPackage -AllUsers'
+        subprocess.run(["powershell", "-Command", cmd], capture_output=True)
+        messagebox.showinfo("Success", "Microsoft Edge has been scheduled for removal.")
+
+    def set_ttl_65(self):
+        try:
+            key = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, r"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters")
+            winreg.SetValueEx(key, "DefaultTTL", 0, winreg.REG_DWORD, 65)
+            winreg.CloseKey(key)
+            messagebox.showinfo("Success", "TTL set to 65 (Internet distribution bypass).")
+        except:
+            messagebox.showerror("Error", "Admin rights required for registry modification.")
+
+    def disable_vbs(self):
+        cmd = 'bcdedit /set hypervisorlaunchtype off'
+        subprocess.run(cmd, shell=True)
+        messagebox.showinfo("Success", "VBS/HVCI disabled. Restart required.")
+
+    def page_advanced(self):
+        Label(self.content_frame, text="Advanced Tweaks", font=("Inter", 20, "bold"), bg=self.colors["bg"], fg=self.colors["text"]).pack(anchor="w", pady=(0, 20))
+        
+        adv_card = Frame(self.content_frame, bg=self.colors["card"], padx=20, pady=20)
+        adv_card.pack(fill=X)
+        
+        Button(adv_card, text="Bypass TTL (Set 65)", command=self.set_ttl_65, bg=self.colors["accent"], fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
+        Button(adv_card, text="Disable VBS / HVCI", command=self.disable_vbs, bg=self.colors["accent"], fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
+        Button(adv_card, text="Remove Microsoft Edge", command=self.remove_edge, bg="#FF3B30", fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
+        Button(adv_card, text="HWID Activation (Massgrave)", command=lambda: webbrowser.open("https://github.com/massgravel/Microsoft-Activation-Scripts"), bg="#4CD964", fg="white", font=("Inter", 10, "bold"), pady=10).pack(fill=X, pady=5)
 
     def page_about(self):
         Card = Frame(self.content_frame, bg=self.colors["card"], padx=20, pady=20)
         Card.pack(fill=BOTH, expand=True)
         
         Label(Card, text="FluxionTweaker", font=("Inter", 24, "bold"), bg=self.colors["card"], fg=self.colors["accent"]).pack(pady=(0, 5))
-        Label(Card, text="Version 3.0.0 Stable", font=("Inter", 12), bg=self.colors["card"], fg=self.colors["text"]).pack(pady=(0, 20))
+        Label(Card, text="Version 5.6.0 Pro Build", font=("Inter", 12), bg=self.colors["card"], fg=self.colors["text"]).pack(pady=(0, 20))
         
         dev_frame = Frame(Card, bg=self.colors["card"])
         dev_frame.pack(fill=X, pady=10)
@@ -189,7 +225,7 @@ class FluxionTweaker:
         Label(modal, text="FluxionTweaker", font=("Inter", 18, "bold"), bg=self.colors["bg"], fg=self.colors["accent"]).pack(pady=20)
         
         info_text = (
-            "FluxionTweaker v3.0.0 Stable\n\n"
+            "FluxionTweaker v5.6.0 Pro Build\n\n"
             "An open-source utility designed to enhance\n"
             "Windows experience and performance.\n\n"
             "Created with Python and Tkinter.\n"
@@ -248,6 +284,9 @@ class FluxionTweaker:
         Label(welcome_frame, text="System Dashboard", font=("Inter", 18, "bold"), bg=self.colors["card"], fg=self.colors["accent"]).pack(anchor="w")
         Label(welcome_frame, text="Status: Optimal", font=("Inter", 10), bg=self.colors["card"], fg="#4CD964").pack(anchor="w")
         
+        top_btn = Button(welcome_frame, text="Pin: Always on Top", font=("Inter", 9), bg=self.colors["sidebar"], fg=self.colors["text"], border=0, command=self.toggle_always_on_top)
+        top_btn.place(relx=0.8, rely=0.1)
+
         Button(self.content_frame, text="Block Yandex Browser (browser.exe)", bg="#FF3B30", fg="#FFFFFF", font=("Inter", 10, "bold"), pady=10, border=0, command=self.block_yandex_browser).pack(fill=X, pady=5)
         
         self.create_toggle("Game Mode", "Enable Windows Game Mode for better performance", "GAMEMODE")

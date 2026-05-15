@@ -67,6 +67,7 @@ const TRANSLATIONS: Record<Language, any> = {
       main: 'Main',
       optimization: 'Optimization',
       gaming: 'Games',
+      advanced: 'Advanced',
       frameworks: 'Frameworks',
       settings: 'Settings',
       drivers: 'Drivers',
@@ -89,6 +90,7 @@ const TRANSLATIONS: Record<Language, any> = {
       main: 'Главная',
       optimization: 'Оптимизация',
       gaming: 'Игры',
+      advanced: 'Продвинутые',
       frameworks: 'Фреймворки',
       settings: 'Настройки',
       drivers: 'Драйверы',
@@ -222,7 +224,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'main', label: 'Main', icon: Home },
   { id: 'optimization', label: 'Optimization', icon: Rocket },
   { id: 'gaming', label: 'Games', icon: Gamepad2 },
-  { id: 'frameworks', label: 'Frameworks', icon: Box },
+  { id: 'advanced', label: 'Advanced', icon: Cpu },
   { id: 'settings', label: 'Settings', icon: Settings2 },
   { id: 'drivers', label: 'Drivers', icon: Download },
   { id: 'privacy', label: 'Privacy', icon: ShieldCheck },
@@ -233,8 +235,12 @@ const FEATURES: FeatureToggle[] = [
   { id: 'game-mode', title: 'Игровой режим', description: 'Макс. FPS, отключение фона', category: 'main', tag: 'Gaming', icon: Gamepad2 },
   { id: 'visual-effects', title: 'Отключить визуальные эффекты', description: 'Анимации, прозрачность, тени', category: 'main', icon: Layout },
   { id: 'telemetry', title: 'Отключить телеметрию', description: 'DiagTrack, dmwappushservice', category: 'main', icon: ShieldCheck },
-  { id: 'block-yandex', title: 'Блокировка Yandex Browser', description: 'Блокирует запуск browser.exe через реестр', category: 'privacy', tag: 'Block', icon: ShieldCheck },
-  { id: 'anti-piracy', title: 'Антипиратская защита', description: 'Проверка лицензии и целостности системы', category: 'privacy', icon: ShieldCheck },
+  { id: 'block-yandex', title: 'Блокировка Yandex Browser', description: 'Запретить запуск browser.exe', category: 'privacy', tag: 'Block', icon: ShieldCheck },
+  { id: 'remove-edge', title: 'Удалить Microsoft Edge', description: 'Полное удаление браузера из системы', category: 'advanced', tag: 'System', icon: Trash },
+  { id: 'bypass-ttl', title: 'Bypass TTL (65)', description: 'Обход ограничений раздачи интернета', category: 'advanced', icon: Activity },
+  { id: 'disable-vbs', title: 'Отключить VBS/HVCI', description: 'Повышение FPS за счет отключения изоляции', category: 'advanced', icon: Cpu },
+  { id: 'hard-update-block', title: 'Hard-блок обновлений', description: 'Блокировка серверов через hosts и реестр', category: 'optimization', tag: 'New', icon: ShieldCheck },
+  { id: 'clean-uwp', title: 'Чистка UWP (Teams/Copilot)', description: 'Удаление встроенного мусора Windows 11', category: 'cleaning', icon: Box },
   { id: 'msi-mode', title: 'MSI Mode (GPU)', description: 'Lower GPU latency by enabling MSI interrupts.', category: 'optimization', icon: Rocket },
   { id: 'hpet', title: 'Disable HPET', description: 'Reduce timer overhead for better input lag.', category: 'optimization', icon: RefreshCcw },
   { id: 'vbs', title: 'Disable VBS/HVCI', description: 'Regain CPU performance by disabling virtualization security.', category: 'optimization', icon: Cpu },
@@ -318,8 +324,18 @@ export default function App() {
                 <h1 className="text-xl font-black tracking-tight leading-none uppercase italic">
                   Fluxion<span className={theme.accentText}>Tweaker</span>
                 </h1>
-                <span className="text-[9px] font-black tracking-[0.2em] opacity-40 uppercase mt-1">v3.0 Stable</span>
+                <span className="text-[9px] font-black tracking-[0.2em] opacity-40 uppercase mt-1">v5.6 Pro Build</span>
               </div>
+            </div>
+
+            <div className="flex gap-2 mb-8">
+               <button 
+                  onClick={() => {/* Mock always on top */}}
+                  className={`flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2`}
+               >
+                  <Layout className="w-3 h-3" />
+                  Always on Top
+               </button>
             </div>
 
             <div className="relative group mb-10">
